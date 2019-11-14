@@ -6,20 +6,25 @@ def trainPerceptron(w, d, learningRate, X, bias):
     #sigma = 0.01
 
     tr_mse = 10000
+    not_decreasing = 0
     
     while tr_mse > 0:
         for i in range(len(X)):
-            y = np.dot(w[1:].T, X[i])
+            y = np.dot(w[1:].T, X[i]) + w[0] * bias
             w[1:] += learningRate * np.dot(d[i] - y, X[i])
             w[0] += learningRate * (d[i] - y) * bias
 
         temp = np.dot((d - (np.dot(X, w[1:]) + w[0])).T, (d - (np.dot(X, w[1:]) + w[0])))
-        if tr_mse <= temp:
+        if tr_mse <= temp and not_decreasing == 3:
             print("Training MSE: ", tr_mse)
             print("If training MSE > 150 try to run again for better results")
             break
+        elif tr_mse <= temp:
+            tr_mse = temp
+            not_decreasing += 1
         else:
             tr_mse = temp
+            not_decreasing = 0
 
     #w_batch = np.dot(np.dot( np.linalg.inv( np.dot(X.T, X) ), X.T), d)
     #print("these are the weights in batch mode",w_batch)
