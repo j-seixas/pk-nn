@@ -35,7 +35,6 @@ class WidrowHoffBatch:
         return Y 
     def Update(self, X, D, eta):
         """Calculate the output for all examples in X (as rows), and update the weights """
-        #self.w[1:] = np.dot(np.dot( np.linalg.inv( np.dot(X.T, X) ), X.T), D)
         Y = self.Forward(X)
         self.w[1:] += eta * np.dot(X.T, (D - Y))
         self.w[0] += eta * np.dot(np.ones((1, X.shape[0])), (D-Y))
@@ -48,7 +47,6 @@ class WidrowHoffBatch:
         for i in range(epochs):
             if self.CalculateErrors(X, D) == 0:
                 break
-            
             self.Update(X, D, eta)
     def CalculateErrors(self, X, D):
         """

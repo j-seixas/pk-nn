@@ -22,13 +22,13 @@ class PerceptronBatch:
         X: matrix with examples as rows
         """
         Y = np.dot(X, self.w) + self.w0
-        return np.array([1 if y > 0 else -1 for y in Y])
+        Y[Y>0] = 1
+        Y[Y<=0] = -1
+        return Y 
     def Update(self, X, D, eta):
         """Calculate the output for all examples in X (as rows), compare with D and update the weights if necessary"""
         Y = self.Forward(X)
         diff = Y!=D
-        updateW = np.array([X[i]*D[i] for i in range(len(Y)) if Y[i] != D[i]]).sum()
-        updateW0 = np.array([D[i] for i in range(len(Y)) if Y[i] != D[i]]).sum()
         self.w += eta * (X[diff] * D[diff, None]).sum(axis=0)
         self.w0 += eta * (D[diff, None]).sum()
 

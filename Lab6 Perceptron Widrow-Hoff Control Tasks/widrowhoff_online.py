@@ -30,10 +30,10 @@ class WidrowHoffOnline:
         return 1 if self.Forward(x) > 0 else -1
     def Update(self, x, d, eta):
         """Calculate the output for x (one example), and update the weights"""
-        if self.ForwardClassify(x) != d:
-            y = self.Forward(x)
-            self.w[1:] += eta * np.dot(d - y, x)
-            self.w[0] += eta * (d - y)
+       
+        y = self.Forward(x)
+        self.w[1:] += eta * np.dot(d - y, x)
+        self.w[0] += eta * (d - y)
     def Train(self, X, D, eta, epochs):
         """
         Train for the maximum number of epochs
@@ -41,8 +41,6 @@ class WidrowHoffOnline:
         D: vector of real values required for examples in rows of X 
         """
         for i in range(epochs):
-            if self.CalculateErrors(X, D) == 0:
-                break
             for j in range(len(X)):
                 self.Update(X[j], D[j], eta)
     def CalculateErrors(self, X, D):
